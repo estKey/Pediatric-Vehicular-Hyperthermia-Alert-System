@@ -80,4 +80,7 @@ void loop() {
   
   delay(2000); // Delays 2 secods, as the DHT22 sampling rate is 0.5Hz
 
+  //logic goes here
+  
+
 }

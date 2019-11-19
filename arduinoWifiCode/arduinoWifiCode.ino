@@ -16,6 +16,7 @@ HttpClient client = HttpClient(wifi, serverAddress, port);
 
 
 void setup() {
+  Serial.begin(9600);
     // check for the WiFi module:
   if (WiFi.status() == WL_NO_MODULE) {
     Serial.println("Communication with WiFi module failed!");
@@ -45,7 +46,7 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-
+  
 }
 
 

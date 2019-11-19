@@ -12,6 +12,7 @@ int port = 80;
 WiFiClient wifi;
 HttpClient client = HttpClient(wifi, serverAddress, port);
 
+//our definitions here
 
 
 
@@ -40,7 +41,8 @@ void setup() {
     delay(10000);
   }
   Serial.println("Connected to wifi");
- 
+
+  //our setup stuff here
 
 }
 

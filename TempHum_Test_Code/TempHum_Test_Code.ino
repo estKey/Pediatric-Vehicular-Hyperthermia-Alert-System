@@ -10,7 +10,7 @@
 #include <DHT.h>
 #define DHTTYPE DHT22
 
-#define dataPin 2 // Defines pin number to which the sensor is connected
+#define dataPin 9 // Defines pin number to which the sensor is connected
 DHT dht(dataPin, DHTTYPE); // Creats a DHT object
 
 

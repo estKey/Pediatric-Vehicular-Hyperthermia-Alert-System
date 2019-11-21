@@ -6,29 +6,45 @@ Connect LED from pin 11 through a resistor to ground
  
 For more information see www.ladyada.net/learn/sensors/fsr.html */
 
-const int buzzer = 9; //buzzer to arduino pin 9
-int fsrAnalogPin = A0; // FSR is connected to analog 0
-int LEDpin = 11;      // connect Red LED to pin 11 (PWM pin)
-int fsrReading;      // the analog reading from the FSR resistor divider
-int LEDbrightness;
+const int buzzer = 8; //buzzer to arduino pin 8
+int fsrPinOne = A0;
+int fsrPinTwo = A1; // FSR is connected to analog 0, 1
+int LEDpinOne = 2;      // connect Red LED to pin 2,1,4
+int LEDpinTwo = 1;
+int LEDpinThree = 4;
+int fsrReadingOne;
+int fsrReadingTwo; // the analog reading from the FSR resistor divider
+int LEDbrightnessOne;
+int LEDbrightnessTwo;
+int LEDbrightnessThree;
  
 void setup(void) {
   Serial.begin(9600);   // We'll send debugging information via the Serial monitor
-  pinMode(LEDpin, OUTPUT);
+  pinMode(LEDpinOne, OUTPUT);
+  pinMode(LEDpinTwo, OUTPUT);
+  pinMode(LEDpinThree, OUTPUT);
   pinMode(buzzer, OUTPUT);
 }
  
 void loop(void) {
-  fsrReading = analogRead(fsrAnalogPin);
-  Serial.print("Analog reading = ");
-  Serial.println(fsrReading);
+  fsrReadingOne = analogRead(fsrPinOne);
+  fsrReadingTwo = analogRead(fsrPinTwo);
+  Serial.print("Analog reading 1= ");
+  Serial.println(fsrReadingOne);
+  Serial.print("Analog reading 2= ");
+  Serial.println(fsrReadingTwo);
  
   // we'll need to change the range from the analog reading (0-1023) down to the range
   // used by analogWrite (0-255) with map!
-  LEDbrightness = map(fsrReading, 0, 1023, 0, 255);
+  LEDbrightnessOne = map(fsrReadingOne, 0, 1023, 0, 255);
+  LEDbrightnessTwo = map(fsrReadingTwo, 0, 1023, 0, 255);
   // LED gets brighter the harder you press
-  analogWrite(LEDpin, LEDbrightness);
+  
+  analogWrite(LEDpinOne, LEDbrightnessOne);
+  analogWrite(LEDpinTwo, LEDbrightnessTwo);
+  analogWrite(LEDpinThree, LEDbrightnessTwo);
+  
 
- tone(buzzer, fsrReading);
-  delay(100);
+ //tone(buzzer, fsrReadingOne);
+  delay(1000);
 }

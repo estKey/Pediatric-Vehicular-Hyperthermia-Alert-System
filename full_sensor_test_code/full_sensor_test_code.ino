@@ -20,8 +20,8 @@ int fsrPinTwo = A1;
 int fsrReadingOne;
 int fsrReadingTwo;
 
-int LEDpinOne = 2; //LED pins on 2, 3, 4
-int LEDpinTwo = 3;
+int LEDpinOne = 2; //LED pins on 2, 1, 4
+int LEDpinTwo = 1;
 int LEDpinThree = 4;
 
 int buttonOne = 5; //buttons on pin 5, 6, 7

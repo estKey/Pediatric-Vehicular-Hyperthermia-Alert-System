@@ -12,6 +12,8 @@
 #define dataPin 9 // Defines pin number to which the sensor is connected
 DHT dht(dataPin, DHTTYPE); // Creats a DHT object
 
+#define tooHot 30
+
 int pirPin = 10; //pin for PIR
 int pirValue; //storage for PIR readings
 int buzzer = 8; //buzzer on pin 8
@@ -28,6 +30,11 @@ int buttonOne = 5; //buttons on pin 5, 6, 7
 int buttonTwo = 6;
 int buttonThree = 7;
 
+int groupNum = 2;
+int alertVar;
+String Trigger_1Var = "its"; 
+String Trigger_2Var = "too"; 
+String Trigger_3Var = "hot";
 
 void setup() {
   // put your setup code here, to run once:
@@ -51,13 +58,6 @@ void loop() {
   int rearDoor = digitalRead(buttonTwo);
   int reset = digitalRead(buttonThree); //look up how to implement a reset button
   // skel code: if{ignition == LOW)
-  //              do something; 
-
-  //these are for the outputs
-  tone(buzzer, [freq]);
-  delay([time the buzzer is on for]);
-  
-  analogWrite(LEDpin, LEDbrightness); //turns on LED on the pin
 
   //reading values
   fsrReading = analogRead(fsrAnalogPin);
@@ -69,18 +69,28 @@ void loop() {
   Serial.println(pirValue);
 
   float t = dht.readTemperature(); // Gets the values of the temperature
-  float h = dht.readHumidity(); // Gets the values of the humidity
 
   Serial.print("Temperature = ");
   Serial.print(t);
   Serial.print(" *C ");
-  Serial.print("    Humidity = ");
-  Serial.print(h);
   Serial.println(" % ");
-  
   delay(2000); // Delays 2 secods, as the DHT22 sampling rate is 0.5Hz
 
   //logic goes here
+  if(fsrReading > 500 && pirValue == 1 && temp > tooHot)
+    //button logic goes here
+    /*
+     * button one gets pressed, starts a timer. 
+     * if the timer runs out, send the call to wifi code, make buzzer go off.
+     * alertVar = 1;
+     * wifiPost(groupNum, alertVar, Trigger_1Var, Trigger_2Var, Trigger_3Var)
+     * if button two is pressed, do nothing
+     */
+    //these are for the outputs
+  tone(buzzer, [freq]);
+  delay([time the buzzer is on for]);
+  analogWrite(LEDpin, LEDbrightness); //turns on LED on the pin
+
   
 
 }

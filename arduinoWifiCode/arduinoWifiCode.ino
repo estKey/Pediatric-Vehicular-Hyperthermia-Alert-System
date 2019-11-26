@@ -1,6 +1,12 @@
 #include <ArduinoHttpClient.h>
 #include <WiFiNINA.h>
 #include <SPI.h>
+#include <DHT.h>
+
+#define DHTTYPE DHT22
+#define dataPin 9 // Defines pin number to which the sensor is connected
+DHT dht(dataPin, DHTTYPE); // Creats a DHT object
+#define tooHot 30   // this is the temperature threshold
 
 int status = WL_IDLE_STATUS;
 #include "arduino_secrets.h" 
@@ -14,7 +20,27 @@ HttpClient client = HttpClient(wifi, serverAddress, port);
 
 //our definitions here
 
+int pirPin = 10; //pin for PIR
+int pirValue; //storage for PIR readings
+int buzzer = 8; //buzzer on pin 8
+int fsrPinOne = A0; //fsr on analog pins 0, 1
+int fsrPinTwo = A1;
+int fsrReadingOne;
+int fsrReadingTwo;
 
+int LEDpinOne = 2; //LED pins on 2, 1, 4
+int LEDpinTwo = 1;
+int LEDpinThree = 4;
+
+int buttonOne = 5; //buttons on pin 5, 6, 7
+int buttonTwo = 6;
+int buttonThree = 7;
+
+int groupNum = 2;
+int alertVar;
+String Trigger_1Var = "its"; 
+String Trigger_2Var = "too"; 
+String Trigger_3Var = "hot";
 
 void setup() {
   Serial.begin(9600);

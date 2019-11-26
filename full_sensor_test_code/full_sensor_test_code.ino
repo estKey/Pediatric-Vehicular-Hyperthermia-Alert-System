@@ -56,7 +56,6 @@ void loop() {
 
   int ignition = digitalRead(buttonOne);
   int rearDoor = digitalRead(buttonTwo);
-  int reset = digitalRead(buttonThree); //look up how to implement a reset button
   // skel code: if{ignition == LOW)
 
   //reading values
@@ -69,7 +68,6 @@ void loop() {
   Serial.println(pirValue);
 
   float t = dht.readTemperature(); // Gets the values of the temperature
-
   Serial.print("Temperature = ");
   Serial.print(t);
   Serial.print(" *C ");
@@ -77,10 +75,10 @@ void loop() {
   delay(2000); // Delays 2 secods, as the DHT22 sampling rate is 0.5Hz
 
   //logic goes here
-  if(fsrReading > 500 && pirValue == 1 && temp > tooHot)
+  while(fsrReading > 500 && pirValue == 1 && temp > tooHot)
     //button logic goes here
     /*
-     * button one gets pressed, starts a timer. 
+     * if button one gets pressed, starts a timer. 
      * if the timer runs out, send the call to wifi code, make buzzer go off.
      * alertVar = 1;
      * wifiPost(groupNum, alertVar, Trigger_1Var, Trigger_2Var, Trigger_3Var)

@@ -69,6 +69,16 @@ void setup() {
   Serial.println("Connected to wifi");
 
   //our setup stuff here
+  dht.begin();
+
+  pinMode(buzzer, OUTPUT);
+  pinMode(LEDpinOne, OUTPUT);
+  pinMode(LEDpinTwo, OUTPUT);
+  pinMode(LEDpinThree, OUTPUT);
+  pinMode(buttonOne, INPUT_PULLUP);
+  pinMode(buttonTwo, INPUT_PULLUP);
+  pinMode(buttonThree, INPUT_PULLUP);
+  pinMode(pirPin, INPUT);
 
 }
 

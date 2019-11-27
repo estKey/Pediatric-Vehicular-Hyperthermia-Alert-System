@@ -21,7 +21,7 @@
 #define DHT_SENSOR_PIN 9 // DHT
 #define PIR_SENSOR_PIN 10 //pin for PIR
 
-#define OBJECT_WEIGHT 800
+#define OBJECT_WEIGHT 600
 #define TEMP_THRESHOLD 27
 #define HUM_THRESHOLD 35
 
@@ -63,9 +63,14 @@ void loop() {
     Serial.println(h);
     Serial.println(fsr_one);
     Serial.println(fsr_two);
-    if (ignition == LOW && (fsr_one > OBJECT_WEIGHT || fsr_two > OBJECT_WEIGHT))start = 1;
+    if (ignition == LOW && (fsr_one > OBJECT_WEIGHT || fsr_two > OBJECT_WEIGHT))
+    {
+      start = 1;
+      Serial.println("ignition");
+    }
       if (start) timer_counter++;
-      if (timer_counter == 100 && t > TEMP_THRESHOLD && h > HUM_THRESHOLD) {
+      Serial.println(timer_counter);
+      if (timer_counter >= 10 && t > TEMP_THRESHOLD && h > HUM_THRESHOLD) {
         digitalWrite(LED_ONE_PIN, HIGH);
           digitalWrite(LED_TWO_PIN, HIGH);
           digitalWrite(LED_THREE_PIN, HIGH);

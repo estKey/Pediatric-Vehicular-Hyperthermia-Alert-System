@@ -11,8 +11,8 @@
 
 
 #define DHTTYPE DHT22
-#define LED_ONE_PIN 1
-#define LED_TWO_PIN 2 //LED pins on 2, 1, 4
+#define LED_ONE_PIN 2
+#define LED_TWO_PIN 1 //LED pins on 2, 1, 4
 #define LED_THREE_PIN 4
 #define BTN_ONE_PIN 5 //buttons on pin 5, 6, 7
 #define BTN_TWO_PIN 6
@@ -22,8 +22,9 @@
 #define PIR_SENSOR_PIN 10 //pin for PIR
 
 #define OBJECT_WEIGHT 600
-#define TEMP_THRESHOLD 27
-#define HUM_THRESHOLD 35
+#define TIME_LIMIT 100
+#define TEMP_THRESHOLD 1
+#define HUM_THRESHOLD 1
 
 int FSR_ONE_PIN, FSR_TWO_PIN;
 DHT dht(DHT_SENSOR_PIN, DHTTYPE);
@@ -47,6 +48,7 @@ void setup() {
 
 void loop() {
   int start = 0;
+  int safe = 0;
   int timer_counter = 0;
   while (1)
   {
@@ -56,6 +58,7 @@ void loop() {
 
     int fsr_one = analogRead(FSR_ONE_PIN);
     int fsr_two = analogRead(FSR_TWO_PIN);
+    int isMoving = digitalRead(PIR_SENSOR_PIN);
     float t = dht.readTemperature(); // Gets the values of the temperature
     float h = dht.readHumidity(); // Gets the values of the humidity
 
@@ -63,19 +66,30 @@ void loop() {
     Serial.println(h);
     Serial.println(fsr_one);
     Serial.println(fsr_two);
-    if (ignition == LOW && (fsr_one > OBJECT_WEIGHT || fsr_two > OBJECT_WEIGHT))
+    if (ignition == LOW && safe && (fsr_one > OBJECT_WEIGHT || fsr_two > OBJECT_WEIGHT || isMoving))
     {
       start = 1;
+      digitalWrite(LED_ONE_PIN, HIGH);
       Serial.println("ignition");
     }
-      if (start) timer_counter++;
-      Serial.println(timer_counter);
-      if (timer_counter >= 10 && t > TEMP_THRESHOLD && h > HUM_THRESHOLD) {
-        digitalWrite(LED_ONE_PIN, HIGH);
-          digitalWrite(LED_TWO_PIN, HIGH);
-          digitalWrite(LED_THREE_PIN, HIGH);
-          tone(BUZZER_PIN, 440);
-        }
+    if (start && !safe) timer_counter++;
+    Serial.println(timer_counter);
+    if (timer_counter >= TIME_LIMIT && t > TEMP_THRESHOLD && h > HUM_THRESHOLD) {
+      Serial.println("Alert");
+      safe = 0;
+      digitalWrite(LED_ONE_PIN, LOW);
+      digitalWrite(LED_TWO_PIN, HIGH);
+      tone(BUZZER_PIN, 440);
+    } else if (t > TEMP_THRESHOLD && h > HUM_THRESHOLD) Serial.println("Good ");
+    if (rearDoor == LOW) {
+      digitalWrite(LED_ONE_PIN, LOW);
+      digitalWrite(LED_THREE_PIN, HIGH);
+      tone(BUZZER_PIN, 0);
+      timer_counter = 0;
+      safe = 1;
+      start = 0;
+      Serial.println("Safe");
+    }
     Serial.println(ignition);
     Serial.println(rearDoor);
     Serial.println(reset);
@@ -83,6 +97,11 @@ void loop() {
     if (reset == LOW)break;
     delay(10);
   }
-delay(2000);
+
+  digitalWrite(LED_ONE_PIN, LOW);
+  digitalWrite(LED_TWO_PIN, LOW);
+  digitalWrite(LED_THREE_PIN, LOW);
+  tone(BUZZER_PIN, 0);
+  delay(2000);
   Serial.println("Done.");
 }
